@@ -1,30 +1,43 @@
 import {Component} from '@angular/core';
 
-import {NavController, AlertController} from 'ionic-angular';
+import {AlertController} from 'ionic-angular';
 import {MediaPlugin} from 'ionic-native';
 
 @Component({
-  selector: 'page-page1',
+  selector: 'page-record-audio',
   templateUrl: 'recordAudio.html'
 })
 export class RecordAudio {
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
+  public isRecording: boolean = false;
+
+  media: MediaPlugin = new MediaPlugin('../Library/NoCloud/recording.wav');
+
+  constructor(public alertCtrl: AlertController) {
 
   }
 
   public startRecording() {
     try {
-      let media = new MediaPlugin('../Library/NoCloud/recording.wav');
-      media.startRecord();
+ //     this.media.startRecord();
+      this.isRecording = true;
     } catch (e) {
-      this.showAlert('Could not start recording.');
+      this.showAlert('Die Aufnahme konnte nicht gestartet werden.');
+    }
+  }
+
+  public stopRecording() {
+    try {
+   //   this.media.stopRecord();
+      this.isRecording = false;
+    } catch (e) {
+      this.showAlert('Die Aufnahme konnte nicht gestoppt werden.');
     }
   }
 
   public showAlert(message) {
     let alert = this.alertCtrl.create({
-      title: 'Error',
+      title: 'Fehler',
       subTitle: message,
       buttons: ['OK']
     });

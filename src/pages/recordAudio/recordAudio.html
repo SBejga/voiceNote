@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Page One</ion-title>
+    <ion-title>Nachricht aufnehmen</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -14,5 +14,5 @@
     If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
   </p>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <button ion-button secondary (click)="startRecording()">Aufnahme starten</button>
 </ion-content>

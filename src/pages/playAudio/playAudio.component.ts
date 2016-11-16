@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import {AudioTrackComponent, AudioTrackPlayComponent, AudioTrackProgressComponent, AudioTrackProgressBarComponent, AudioTimePipe, AudioProvider} from 'ionic-audio/dist/ionic-audio';
 
 import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-page2',
-  templateUrl: 'playAudio.html',
-  directives: [AudioTrackComponent, AudioTrackPlayComponent, AudioTrackProgressComponent, AudioTrackProgressBarComponent]
+  templateUrl: 'playAudio.html'
 })
 export class PlayAudio {
   items: Array<{title: string, note: string}>;

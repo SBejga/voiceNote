@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
-import { AudioProvider } from 'ionic-audio/dist/ionic-audio';
 
 
 import { RecordAudio } from '../pages/recordAudio/recordAudio.component';
@@ -44,7 +43,3 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 }
-ionicBootstrap(MyApp, [provide(AudioProvider,  { useFactory: AudioProvider.factory })], {
-
-});  
-  

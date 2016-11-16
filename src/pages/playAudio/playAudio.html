@@ -9,11 +9,10 @@
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" >
-      {{item.title}}
-      <div class="item-note" item-right>
-        {{item.note}}
-      </div>
-    </button>
+    <ion-item *ngFor="let voiceMessage of voiceMessages; let i = index">
+      {{voiceMessage.title}}
+      <ion-icon [hidden]="!voiceMessage.currentlyPlaying" name="pause" style="float:right; margin-right:15px;" (click)="stopPlaying()"></ion-icon>
+      <ion-icon [hidden]="voiceMessage.currentlyPlaying" name="play" style="float:right; margin-right:15px;" (click)="startPlaying(i)"></ion-icon>
+    </ion-item>
   </ion-list>
 </ion-content>

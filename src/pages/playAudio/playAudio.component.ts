@@ -1,32 +1,44 @@
 import { Component } from '@angular/core';
-
+import { File } from 'ionic-native';
 import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-page2',
-  templateUrl: 'playAudio.html'
+  templateUrl: 'playAudio.html',
 })
 export class PlayAudio {
-  items: Array<{title: string, note: string}>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
-    // Let's populate this page with some filler content for funzies
+    voiceMessages: Array<{title:string, currentlyPlaying:boolean}> ;
+    public currentlyPlayingIndex:number;
 
+    constructor(public navCtrl: NavController, public navParams: NavParams) {
 
-    this.items = [];
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-      });
+        this.voiceMessages = [];
+        this.currentlyPlayingIndex = -1;
+
+        for(let i=0; i<=10; i++) {
+            this.voiceMessages.push({
+                title:"voiceMessage "+i,
+                currentlyPlaying:false
+            })
+        }
     }
-  }
 
-  itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(PlayAudio, {
-      item: item
-    });
-  }
-}
+    startPlaying(i) {
+        if(this.currentlyPlayingIndex >=0) {
+            this.stopPlaying();
+        }
+        this.currentlyPlayingIndex = i;
+        this.voiceMessages[i].currentlyPlaying=true;
+
+    }
+
+    stopPlaying() {
+        this.voiceMessages[this.currentlyPlayingIndex].currentlyPlaying=false;
+        this.currentlyPlayingIndex = -1;
+
+    }
+
+
+
+    }

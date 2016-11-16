@@ -1,8 +1,37 @@
 page-record-audio {
-  .startButton {
+  text-align: center;
+
+  .startButton, .stopButton {
+    font-size: 35px;
+    width: 70px;
+    height: 70px;
+
+    margin-top: 50%;
+    transform: translate(0, -50%);
   }
 
   .stopButton {
+    color: #ffffff;
+    background-color: #ff0033;
 
+    &.active, &.activated {
+      background-color: #cc0000;
+    }
+    &.button-clear {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+      color: #625031;
+    }
+    &.button-outline {
+      border-color: #625031;
+      background: transparent;
+      color: #625031;
+    }
+    &.button-outline.active, &.button-outline.activated {
+      background-color: #625031;
+      box-shadow: none;
+      color: #000000;
+    }
   }
 }

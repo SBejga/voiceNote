@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { RecordAudio } from '../pages/recordAudio/recordAudio.component';
+import { RecordAudio } from '../pages/recordAudio/recordAudio';
 import { PlayAudio } from '../pages/playAudio/playAudio.component';
 
 @NgModule({

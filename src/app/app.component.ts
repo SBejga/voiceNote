@@ -3,7 +3,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 
-import { RecordAudio } from '../pages/recordAudio/recordAudio.component';
+import { RecordAudio } from '../pages/recordAudio/recordAudio';
 import { PlayAudio } from '../pages/playAudio/playAudio.component';
 
 

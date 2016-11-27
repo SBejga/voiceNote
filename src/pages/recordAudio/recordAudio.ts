@@ -12,7 +12,7 @@ declare let cordova: any;
   templateUrl: 'recordAudio.html',
   providers: [Database]
 })
-export class RecordAudio {
+export class RecordAudioPage {
 
   public title: string = '';
   public recordingStatus: number = 0;
@@ -22,7 +22,7 @@ export class RecordAudio {
   public recordingPosition: number;
 
   private media: MediaPlugin = null;
-  private recordingName: string = 'sample.mp3';
+  private recordingName: string = 'recording.mp3';
   private startedRecording: Date = null;
   private recordingTimerUpdate: any = null;
   private recordingPlayUpdate: any = null;
@@ -37,6 +37,7 @@ export class RecordAudio {
     this.recordingPosition = 0;
 
     this.media = new MediaPlugin(cordova.file.externalDataDirectory + this.recordingName);
+    // TODO: Request permissions
     try {
       this.media.startRecord();
     } catch (e) {
@@ -47,7 +48,10 @@ export class RecordAudio {
     this.startedRecording = new Date();
     this.recordingStatus = 1;
 
-    this.recordingTimerUpdate = setInterval(this.updateRecordingTime, 1000);
+    this.recordingTimerUpdate = setInterval(
+      () => {
+        this.updateRecordingTime();
+      }, 1000);
   }
 
   public stopRecording() {

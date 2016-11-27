@@ -1,27 +1,22 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
 
-import {NavController, NavParams} from 'ionic-angular';
+/*
+  Generated class for the Login page.
 
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+*/
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html',
+  templateUrl: 'login.html'
 })
-export class Login {
+export class LoginPage {
 
-  voiceMessages: Array<{title: string, currentlyPlaying: boolean}>;
-  public currentlyPlayingIndex: number;
+  constructor(public navCtrl: NavController) {}
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-
-    this.voiceMessages = [];
-    this.currentlyPlayingIndex = -1;
-
-    for (let i = 0; i <= 10; i++) {
-      this.voiceMessages.push({
-        title: "voiceMessage " + i,
-        currentlyPlaying: false
-      })
-    }
+  ionViewDidLoad() {
+    console.log('Hello LoginPage Page');
   }
 
 }

@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, SQLite} from 'ionic-native';
+import { StatusBar, Splashscreen} from 'ionic-native';
 
-import { RecordAudio } from '../pages/recordAudio/recordAudio';
+import { RecordAudioPage } from '../pages/recordAudio/recordAudio';
 import { PlayAudio } from '../pages/playAudio/playAudio';
 
 import { Database } from '../providers/database';
@@ -14,7 +14,7 @@ import { Database } from '../providers/database';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = RecordAudio;
+  rootPage: any = RecordAudioPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -23,7 +23,7 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Nachricht aufnehmen', component: RecordAudio },
+      { title: 'Nachricht aufnehmen', component: RecordAudioPage },
       { title: 'Aufnahmen abspielen', component: PlayAudio }
     ];
 
@@ -34,24 +34,7 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
-      this.initializeDatabase();
       Splashscreen.hide();
-    });
-  }
-
-  initializeDatabase() {
-    let db = new SQLite();
-    db.openDatabase({
-      name: "data.db",
-      location: "default"
-    }).then(() => {
-      db.executeSql("CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, path TEXT, synchronized INTEGER)", {}).then((data) => {
-        console.log("TABLE CREATED: ", data);
-      }, (error) => {
-        console.error("Unable to execute sql", error);
-      })
-    }, (error) => {
-      console.error("Unable to open database", error);
     });
   }
 

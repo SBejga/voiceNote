@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { RecordAudio } from '../pages/recordAudio/recordAudio';
+import { RecordAudioPage } from '../pages/recordAudio/recordAudio';
 import { PlayAudio } from '../pages/playAudio/playAudio';
+
+import { LoginPage } from '../pages/login/login';
 
 @NgModule({
   declarations: [
     MyApp,
-    RecordAudio,
-    PlayAudio
+    RecordAudioPage,
+    PlayAudio,
+    LoginPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -16,8 +19,9 @@ import { PlayAudio } from '../pages/playAudio/playAudio';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    RecordAudio,
-    PlayAudio
+    RecordAudioPage,
+    PlayAudio,
+    LoginPage
   ],
   providers: []
 })

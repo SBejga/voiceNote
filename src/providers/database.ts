@@ -14,7 +14,15 @@ export class Database {
         if (!this.isOpen) {
           this.storage = new SQLite();
           this.storage.openDatabase({name: 'data.db', location: 'default'}).then(() => {
-            this.storage.executeSql('CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY AUTOINCREMENT, duration INTEGER, title TEXT, date TEXT)', []);
+            this.storage.executeSql('CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY AUTOINCREMENT, duration INTEGER, title TEXT, recordingDate TEXT DEFAULT (datetime(\'now\', \'localtime\')))', [])
+              .then(
+                (data) => {
+                  console.log('Table created', data);
+                },
+                (error) => {
+                  console.log('Table could not be created', error);
+                }
+              );
             this.isOpen = true;
           });
         }
@@ -29,7 +37,7 @@ export class Database {
           recordings.push({
             id: data.rows.item(i).id,
             title: data.rows.item(i).title,
-            date: data.rows.item(i).date,
+            date: new Date(data.rows.item(i).recordingDate),
             duration: data.rows.item(i).duration
           });
         }
@@ -42,7 +50,7 @@ export class Database {
 
   public createRecording(title: string, duration: number) {
     return new Promise((resolve, reject) => {
-      this.storage.executeSql('INSERT INTO recordings (title, date, duration) VALUES (?, date(now), ?)', [title, duration]).then((data) => {
+      this.storage.executeSql('INSERT INTO recordings (title, duration) VALUES (?, ?)', [title, duration]).then((data) => {
         resolve(data.insertId);
       }, (error) => {
         reject(error);

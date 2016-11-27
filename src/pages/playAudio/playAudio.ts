@@ -1,27 +1,32 @@
 import {Component} from '@angular/core';
-
+import {Database} from '../../providers/database'
 import {NavController, NavParams} from 'ionic-angular';
 
 @Component({
   selector: 'page-play-audio',
   templateUrl: 'playAudio.html',
+  providers: [Database]
 })
 export class PlayAudio {
 
-  voiceMessages: Array<{title: string, currentlyPlaying: boolean}>;
+  voiceMessages: Array<{
+    message:any
+  }>;
+  public offset:number;
   public currentlyPlayingIndex: number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-
-    this.voiceMessages = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams, public database:Database) {
+    this.offset=0;
+    this.database.getRecordings(20,this.offset).then(
+        (recordings) => {
+          this.voiceMessages = recordings;
+        },
+        (error) => {
+          //TODO: errorhandling
+        }
+    )
     this.currentlyPlayingIndex = -1;
 
-    for (let i = 0; i <= 10; i++) {
-      this.voiceMessages.push({
-        title: "voiceMessage " + i,
-        currentlyPlaying: false
-      })
-    }
   }
 
   startPlaying(i) {
@@ -29,14 +34,10 @@ export class PlayAudio {
       this.stopPlaying();
     }
     this.currentlyPlayingIndex = i;
-    this.voiceMessages[i].currentlyPlaying = true;
-
   }
 
   stopPlaying() {
-    this.voiceMessages[this.currentlyPlayingIndex].currentlyPlaying = false;
     this.currentlyPlayingIndex = -1;
-
   }
 
 }

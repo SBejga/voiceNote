@@ -14,36 +14,35 @@ export class Database {
         if (!this.isOpen) {
           this.storage = new SQLite();
           this.storage.openDatabase({name: 'data.db', location: 'default'}).then(() => {
-            this.storage.executeSql('CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, synchronized INTEGER)', []);
+            this.storage.executeSql('CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY AUTOINCREMENT, duration INTEGER, title TEXT, date TEXT)', []);
             this.isOpen = true;
           });
         }
       });
   }
 
-
-  public getRecordings(limit: number, offset: number) {
+  public getRecordings(limit: number, offset: number) : Promise<any> {
     return new Promise((resolve, reject) => {
       this.storage.executeSql('SELECT * FROM recordings LIMIT ?, ?', [offset, limit]).then((data) => {
-        let recordings = [];
+        let recordings: Array<{id: number, title: string, date: Date, duration: number}> = [];
         for (let i = 0; i < data.rows.length; i++) {
           recordings.push({
             id: data.rows.item(i).id,
             title: data.rows.item(i).title,
-            path: data.rows.item(i).path,
-            synchronized: data.rows.item(i).synchronized > 0
+            date: data.rows.item(i).date,
+            duration: data.rows.item(i).duration
           });
         }
-        resolve(recordings);
+        return resolve(recordings);
       }, (error) => {
-        reject(error);
+        return reject(error);
       });
     });
   }
 
-  public createRecording(title: string, synchronized: boolean) {
+  public createRecording(title: string) {
     return new Promise((resolve, reject) => {
-      this.storage.executeSql('INSERT INTO recordings (title, synchronized) VALUES (?, ?)', [title, synchronized]).then((data) => {
+      this.storage.executeSql('INSERT INTO recordings (title, date) VALUES (?, date(now))', [title]).then((data) => {
         resolve(data.insertId);
       }, (error) => {
         reject(error);

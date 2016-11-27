@@ -1,37 +1,56 @@
+$custom-button-width: 70px;
+
 page-record-audio {
-  text-align: center;
 
-  .startButton, .stopButton {
+  .startButton, .stopButton, .playButton {
+    width: $custom-button-width;
+    height: $custom-button-width;
+    margin: 0;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  }
+
+  .startButton {
     font-size: 35px;
-    width: 70px;
-    height: 70px;
-
-    margin-top: 50%;
-    transform: translate(0, -50%);
   }
 
   .stopButton {
-    color: #ffffff;
+    font-size: 25px;
     background-color: #ff0033;
 
     &.active, &.activated {
       background-color: #cc0000;
     }
-    &.button-clear {
-      border-color: transparent;
-      background: none;
-      box-shadow: none;
-      color: #625031;
+  }
+
+
+  .playButton {
+    font-size: 25px;
+    background-color: #60ff33;
+
+    &.active, &.activated {
+      background-color: #30cc00;
     }
-    &.button-outline {
-      border-color: #625031;
-      background: transparent;
-      color: #625031;
-    }
-    &.button-outline.active, &.button-outline.activated {
-      background-color: #625031;
-      box-shadow: none;
-      color: #000000;
+  }
+
+  .time, .options {
+    width: 100%;
+    position: absolute;
+  }
+
+  .time {
+    text-align: center;
+    top: calc( 25% + #{$custom-button-width/2} + 1em);
+  }
+
+  .options {
+    top: calc( 25% + #{$custom-button-width/2} + 50px);
+
+    ion-item {
+      margin-bottom: 10px;
     }
   }
 }

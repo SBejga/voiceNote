@@ -33,9 +33,11 @@
     "cordova-plugin-console",
     "cordova-plugin-statusbar",
     "cordova-plugin-device",
-    "cordova-plugin-media",
     "cordova-plugin-splashscreen",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-plugin-file",
+    "cordova-plugin-media",
+    "cordova-sqlite-storage"
   ],
   "cordovaPlatforms": [],
   "description": "VoiceNote: An Ionic project"

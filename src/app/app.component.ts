@@ -1,14 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
-
+import { StatusBar, Splashscreen, SQLite} from 'ionic-native';
 
 import { RecordAudio } from '../pages/recordAudio/recordAudio';
-import { PlayAudio } from '../pages/playAudio/playAudio.component';
+import { PlayAudio } from '../pages/playAudio/playAudio';
 
+import { Database } from '../providers/database';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [Database]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -33,7 +34,24 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
+      this.initializeDatabase();
       Splashscreen.hide();
+    });
+  }
+
+  initializeDatabase() {
+    let db = new SQLite();
+    db.openDatabase({
+      name: "data.db",
+      location: "default"
+    }).then(() => {
+      db.executeSql("CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, path TEXT, synchronized INTEGER)", {}).then((data) => {
+        console.log("TABLE CREATED: ", data);
+      }, (error) => {
+        console.error("Unable to execute sql", error);
+      })
+    }, (error) => {
+      console.error("Unable to open database", error);
     });
   }
 

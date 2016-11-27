@@ -8,11 +8,45 @@
 </ion-header>
 
 <ion-content padding>
-  <button ion-button icon-only round [hidden]="isRecording" (click)="startRecording()" class="startButton">
-    <ion-icon name="mic"></ion-icon>
-  </button>
+  <div class="full-parent">
+    <button ion-button icon-only round [hidden]="recordingStatus!==0" (click)="startRecording()" class="startButton">
+      <ion-icon name="mic"></ion-icon>
+    </button>
+    <button ion-button icon-only round [hidden]="recordingStatus!==1" (click)="stopRecording()" class="stopButton">
+      <ion-icon name="mic-off"></ion-icon>
+    </button>
+    <button ion-button icon-only round [hidden]="recordingStatus!==2" (click)="playRecording()" class="playButton">
+      <ion-icon name="play"></ion-icon>
+    </button>
+    <button ion-button icon-only round [hidden]="recordingStatus!==3" (click)="pauseRecording()" class="playButton">
+      <ion-icon name="pause"></ion-icon>
+    </button>
 
-  <button ion-button icon-only round [hidden]="!isRecording" (click)="stopRecording()" class="stopButton">
-    <ion-icon name="mic-off"></ion-icon>
-  </button>
+    <div class="time" *ngIf="recordingStatus===1">
+      {{ recordingTimer }}
+    </div>
+
+    <div class="time" *ngIf="recordingStatus>1 && recordingDuration>0">
+      <ion-item>
+        <ion-range min="0" max="{{recordingDuration}}"
+                   [ngModel]="recordingPosition" (ionChange)="setCurrentPosition($event.value)">
+          <ion-label range-left>{{recordingPosition}}</ion-label>
+          <ion-label range-right>{{recordingDuration}}</ion-label>
+        </ion-range>
+      </ion-item>
+    </div>
+
+    <div class="options" [hidden]="recordingStatus<2">
+      <ion-item>
+        <ion-label floating="">Titel</ion-label>
+        <ion-input [(ngModel)]="title" type="text"></ion-input>
+      </ion-item>
+      <button ion-button icon-left block (click)="newRecording(true)">
+        <ion-icon name="cloud-upload"></ion-icon> Speichern
+      </button>
+      <button ion-button icon-left block (click)="newRecording(false)">
+        <ion-icon name="trash"></ion-icon> Verwerfen
+      </button>
+    </div>
+  </div>
 </ion-content>

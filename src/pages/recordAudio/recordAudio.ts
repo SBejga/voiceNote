@@ -115,7 +115,7 @@ export class RecordAudio {
     }
 
     if(save) {
-      this.database.createRecording(this.title, false)
+      this.database.createRecording(this.title, this.recordingDuration)
         .then(
           (insertId) => {
             File.moveFile(cordova.file.externalDataDirectory, this.recordingName, cordova.file.externalDataDirectory, insertId+'.mp3');

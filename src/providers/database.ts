@@ -40,9 +40,9 @@ export class Database {
     });
   }
 
-  public createRecording(title: string) {
+  public createRecording(title: string, duration: number) {
     return new Promise((resolve, reject) => {
-      this.storage.executeSql('INSERT INTO recordings (title, date) VALUES (?, date(now))', [title]).then((data) => {
+      this.storage.executeSql('INSERT INTO recordings (title, date, duration) VALUES (?, date(now), ?)', [title, duration]).then((data) => {
         resolve(data.insertId);
       }, (error) => {
         reject(error);

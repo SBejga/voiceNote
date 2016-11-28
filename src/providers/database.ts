@@ -8,7 +8,7 @@ export class Database {
   private storage: SQLite;
   private isOpen: boolean;
 
-  public constructor(platform: Platform) {
+  constructor(platform: Platform) {
     platform.ready().then(
       () => {
         if (!this.isOpen) {
@@ -17,7 +17,7 @@ export class Database {
             this.storage.executeSql('CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY AUTOINCREMENT, duration INTEGER, title TEXT, recordingDate TEXT DEFAULT (datetime(\'now\', \'localtime\')))', [])
               .then(
                 (data) => {
-                  console.log('Table created', data);
+                  console.log('Table created');
                 },
                 (error) => {
                   console.log('Table could not be created', error);
@@ -32,6 +32,7 @@ export class Database {
   public getRecordings(limit: number, offset: number) : Promise<any> {
     return new Promise((resolve, reject) => {
       this.storage.executeSql('SELECT * FROM recordings LIMIT ?, ?', [offset, limit]).then((data) => {
+        console.log('Data: ', data);
         let recordings: Array<{id: number, title: string, date: Date, duration: number}> = [];
         for (let i = 0; i < data.rows.length; i++) {
           recordings.push({
@@ -41,9 +42,10 @@ export class Database {
             duration: data.rows.item(i).duration
           });
         }
-        return resolve(recordings);
+        resolve(recordings);
       }, (error) => {
-        return reject(error);
+        console.log('Error: '+error);
+        reject(error);
       });
     });
   }

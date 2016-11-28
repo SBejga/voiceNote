@@ -4,17 +4,19 @@ import { StatusBar, Splashscreen} from 'ionic-native';
 
 import { RecordAudioPage } from '../pages/recordAudio/recordAudio';
 import { PlayAudio } from '../pages/playAudio/playAudio';
+import { LoginPage } from '../pages/login/login';
 
 import { Database } from '../providers/database';
+import { ErrorHandler } from '../providers/errorHandler';
 
 @Component({
   templateUrl: 'app.html',
-  providers: [Database]
+  providers: [Database, ErrorHandler]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = RecordAudioPage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -24,7 +26,8 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Nachricht aufnehmen', component: RecordAudioPage },
-      { title: 'Aufnahmen abspielen', component: PlayAudio }
+      { title: 'Aufnahmen abspielen', component: PlayAudio },
+      { title: 'Login', component: LoginPage }
     ];
 
   }

@@ -3,7 +3,7 @@ import {Platform} from 'ionic-angular';
 import {SQLite} from 'ionic-native';
 
 @Injectable()
-export class Database {
+export class DatabaseService {
 
   private storage: SQLite;
   private isOpen: boolean;
@@ -14,7 +14,7 @@ export class Database {
         if (!this.isOpen) {
           this.storage = new SQLite();
           this.storage.openDatabase({name: 'data.db', location: 'default'}).then(() => {
-            this.storage.executeSql('CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY AUTOINCREMENT, duration INTEGER, title TEXT, recordingDate TEXT DEFAULT (datetime(\'now\', \'localtime\')))', [])
+            this.storage.executeSql('CREATE TABLE IF NOT EXISTS recordings (id INTEGER PRIMARY KEY AUTOINCREMENT, duration INTEGER, title TEXT, recordingDate TEXT DEFAULT (strftime(\'%d.%m.%Y %H:%M\', \'now\')))', [])
               .then(
                 (data) => {
                   console.log('Table created');
@@ -31,16 +31,20 @@ export class Database {
 
   public getRecordings(limit: number, offset: number) : Promise<any> {
     return new Promise((resolve, reject) => {
-      this.storage.executeSql('SELECT * FROM recordings LIMIT ?, ?', [offset, limit]).then((data) => {
+      this.storage.executeSql('SELECT * FROM recordings ORDER BY id DESC LIMIT ?, ?', [offset, limit]).then((data) => {
         console.log('Data: ', data);
-        let recordings: Array<{id: number, title: string, date: Date, duration: number}> = [];
+        let recordings: Array<{id: number, title: string, date: string, duration: number}> = [];
         for (let i = 0; i < data.rows.length; i++) {
-          recordings.push({
+          let tmpRecording = {
             id: data.rows.item(i).id,
             title: data.rows.item(i).title,
-            date: new Date(data.rows.item(i).recordingDate),
+            date: data.rows.item(i).recordingDate,
             duration: data.rows.item(i).duration
-          });
+          };
+          if(tmpRecording.title === '') {
+            tmpRecording.title = 'Sprachnachricht ' + tmpRecording.id;
+          }
+          recordings.push(tmpRecording);
         }
         resolve(recordings);
       }, (error) => {

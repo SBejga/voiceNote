@@ -6,13 +6,14 @@ import { RecordAudioPage } from '../pages/recordAudio/recordAudio';
 import { PlayAudio } from '../pages/playAudio/playAudio';
 import { LoginPage } from '../pages/login/login';
 
-import { Database } from '../providers/database';
-import { ErrorHandler } from '../providers/errorHandler';
+import { DatabaseService } from '../providers/database';
+import { ErrorHandlerService } from '../providers/errorHandler';
 
 @Component({
   templateUrl: 'app.html',
-  providers: [Database, ErrorHandler]
+  providers: [DatabaseService, ErrorHandlerService]
 })
+
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 

@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 
 import {MediaPlugin, File} from 'ionic-native'
 
-import {Database} from '../../providers/database';
-import {ErrorHandler} from '../../providers/errorHandler';
+import {DatabaseService} from '../../providers/database';
+import {ErrorHandlerService} from '../../providers/errorHandler';
 
 declare let cordova: any;
 
@@ -26,7 +26,7 @@ export class RecordAudioPage {
   private recordingTimerUpdate: any = null;
   private recordingPlayUpdate: any = null;
 
-  constructor(private database: Database, private errorHandler: ErrorHandler) {
+  constructor(private database: DatabaseService, private errorHandler: ErrorHandlerService) {
   }
 
   public startRecording() {

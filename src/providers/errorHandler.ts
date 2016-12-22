@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AlertController} from 'ionic-angular';
 
 @Injectable()
-export class ErrorHandler {
+export class ErrorHandlerService {
 
   constructor(private alertCtrl: AlertController) {
   }

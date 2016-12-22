@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
-import {Database} from '../../providers/database'
-import {ErrorHandler} from '../../providers/errorHandler'
+import {DatabaseService} from '../../providers/database'
+import {ErrorHandlerService} from '../../providers/errorHandler'
 
 @Component({
   selector: 'page-play-audio',
@@ -12,10 +12,10 @@ export class PlayAudio {
   public currentlyPlayingIndex: number = -1;
   public voiceMessages: Array<{id: number, title: string, date: Date, duration: number}> = [];
 
-  private offset:number = 0;
+  private offset: number = 0;
   private limit: number = 20;
 
-  constructor(private database:Database, private errorHandler: ErrorHandler) {
+  constructor(private database: DatabaseService, private errorHandler: ErrorHandlerService) {
     this.loadMessages();
   }
 

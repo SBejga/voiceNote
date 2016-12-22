@@ -1,7 +1,11 @@
 import {Component} from '@angular/core';
+import {MediaPlugin, File} from 'ionic-native'
 
 import {DatabaseService} from '../../providers/database'
 import {ErrorHandlerService} from '../../providers/errorHandler'
+
+declare let cordova: any;
+
 
 @Component({
   selector: 'page-play-audio',
@@ -10,7 +14,8 @@ import {ErrorHandlerService} from '../../providers/errorHandler'
 export class PlayAudio {
 
   public currentlyPlayingIndex: number = -1;
-  public voiceMessages: Array<{id: number, title: string, date: Date, duration: number}> = [];
+  public voiceMessages: Array<{id: number, title: string, date: Date, duration: number, formattedDuration:string}> = [];
+  public media;
 
   private offset: number = 0;
   private limit: number = 20;
@@ -18,16 +23,29 @@ export class PlayAudio {
   constructor(private database: DatabaseService, private errorHandler: ErrorHandlerService) {
     this.loadMessages();
   }
+  
 
   public startPlaying(i) {
-    if (this.currentlyPlayingIndex >= 0) {
-      this.stopPlaying();
-    }
     this.currentlyPlayingIndex = i;
+    let id = this.voiceMessages[i].id;
+    this.media = new MediaPlugin(cordova.file.externalDataDirectory + id + '.mp3');
+    try {
+      this.media.play();
+    } catch (e) {
+      this.errorHandler.showAlert('Die Aufnahme konnte nicht abgespielt werden.', e);
+      return;
+    }
   }
 
   public stopPlaying() {
+    try {
+      this.media.pause();
+    } catch (e) {
+      this.errorHandler.showAlert('Die Aufnahme konnte nicht pausiert werden.', e);
+      return;
+    }
     this.currentlyPlayingIndex = -1;
+    
   }
 
   private loadMessages() {

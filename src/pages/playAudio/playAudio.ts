@@ -46,6 +46,7 @@ export class PlayAudio {
     }
     this.currentlyPlayingIndex = -1;
     
+    
   }
 
   private loadMessages() {

@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {MediaPlugin, File} from 'ionic-native'
-
-import {DatabaseService} from '../../providers/database'
-import {ErrorHandlerService} from '../../providers/errorHandler'
+import {MediaPlugin} from 'ionic-native';
+import {DatabaseService} from '../../providers/database';
+import {Platform} from "ionic-angular";
+import {MessageHandlerService} from "../../providers/messageHandlerService";
 
 declare let cordova: any;
 
@@ -14,16 +14,19 @@ declare let cordova: any;
 export class PlayAudio {
 
   public currentlyPlayingIndex: number = -1;
-  public voiceMessages: Array<{id: number, title: string, date: Date, duration: number, formattedDuration:string}> = [];
+  public voiceMessages: Array<{id: number, title: string, date: Date, duration: number, formattedDuration: string}> = [];
   public media;
 
   private offset: number = 0;
   private limit: number = 20;
 
-  constructor(private database: DatabaseService, private errorHandler: ErrorHandlerService) {
-    this.loadMessages();
+  constructor(public database: DatabaseService, public messageHandler: MessageHandlerService, private platform: Platform) {
+    platform.ready().then(
+      () => {
+        this.loadMessages();
+      });
   }
-  
+
 
   public startPlaying(i) {
     this.currentlyPlayingIndex = i;
@@ -32,7 +35,7 @@ export class PlayAudio {
     try {
       this.media.play();
     } catch (e) {
-      this.errorHandler.showAlert('Die Aufnahme konnte nicht abgespielt werden.', e);
+      this.messageHandler.showAlert('Die Aufnahme konnte nicht abgespielt werden.', e);
       return;
     }
   }
@@ -41,22 +44,21 @@ export class PlayAudio {
     try {
       this.media.pause();
     } catch (e) {
-      this.errorHandler.showAlert('Die Aufnahme konnte nicht pausiert werden.', e);
+      this.messageHandler.showAlert('Die Aufnahme konnte nicht pausiert werden.', e);
       return;
     }
     this.currentlyPlayingIndex = -1;
-    
-    
+
+
   }
 
   private loadMessages() {
     this.database.getRecordings(this.limit, this.offset).then(
       (recordings) => {
-        console.log('Recordings:', recordings);
         this.voiceMessages = this.voiceMessages.concat(recordings);
       },
       (error) => {
-        this.errorHandler.showAlert('Es konnten keine vorhandenen Aufnahmen geladen werde.', error);
+        this.messageHandler.showAlert('Es konnten keine vorhandenen Aufnahmen geladen werde.', error);
       }
     );
   }

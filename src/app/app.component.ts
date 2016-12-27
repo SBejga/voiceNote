@@ -6,12 +6,10 @@ import { RecordAudioPage } from '../pages/recordAudio/recordAudio';
 import { PlayAudio } from '../pages/playAudio/playAudio';
 import { LoginPage } from '../pages/login/login';
 
-import { DatabaseService } from '../providers/database';
-import { ErrorHandlerService } from '../providers/errorHandler';
+import {AuthorizerService} from "../providers/authorizer";
 
 @Component({
-  templateUrl: 'app.html',
-  providers: [DatabaseService, ErrorHandlerService]
+  templateUrl: 'app.html'
 })
 
 export class MyApp {
@@ -21,19 +19,18 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform) {
+  constructor(private platform: Platform, private authorizer: AuthorizerService) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Nachricht aufnehmen', component: RecordAudioPage },
-      { title: 'Aufnahmen abspielen', component: PlayAudio },
-      { title: 'Login', component: LoginPage }
+      { title: 'Aufnahmen abspielen', component: PlayAudio }
     ];
 
   }
 
-  initializeApp() {
+  private initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -42,9 +39,14 @@ export class MyApp {
     });
   }
 
-  openPage(page) {
+  public openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  public logout() {
+    this.authorizer.setUser(null);
+    this.nav.setRoot(LoginPage);
   }
 }

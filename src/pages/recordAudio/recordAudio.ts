@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {MediaPlugin, File} from 'ionic-native'
 
 import {DatabaseService} from '../../providers/database';
-import {ErrorHandlerService} from '../../providers/errorHandler';
+import {MessageHandlerService} from "../../providers/messageHandlerService";
 
 declare let cordova: any;
 
@@ -26,7 +26,7 @@ export class RecordAudioPage {
   private recordingTimerUpdate: any = null;
   private recordingPlayUpdate: any = null;
 
-  constructor(private database: DatabaseService, private errorHandler: ErrorHandlerService) {
+  constructor(private database: DatabaseService, private messageHandler: MessageHandlerService) {
   }
 
   public startRecording() {
@@ -35,22 +35,26 @@ export class RecordAudioPage {
     this.recordingDuration = 0;
     this.recordingPosition = 0;
 
-    this.media = new MediaPlugin(cordova.file.externalDataDirectory + this.recordingName);
-    // TODO: Request permissions
+    this.media = new MediaPlugin(cordova.file.externalDataDirectory + this.recordingName,
+      (status) => {
+        console.log(status, this.recordingStatus);
+        if (status === MediaPlugin.MEDIA_RUNNING && this.recordingStatus === 0) {
+          this.startedRecording = new Date();
+          this.recordingStatus = 1;
+
+          this.recordingTimerUpdate = setInterval(
+            () => {
+              this.updateRecordingTime();
+            }, 1000);
+          console.log(this.recordingTimerUpdate);
+        }
+      });
     try {
       this.media.startRecord();
     } catch (e) {
-      this.errorHandler.showAlert('Die Aufnahme konnte nicht gestartet werden.', e);
+      this.messageHandler.showAlert('Die Aufnahme konnte nicht gestartet werden.', e);
       return;
     }
-
-    this.startedRecording = new Date();
-    this.recordingStatus = 1;
-
-    this.recordingTimerUpdate = setInterval(
-      () => {
-        this.updateRecordingTime();
-      }, 1000);
   }
 
   public stopRecording() {
@@ -59,7 +63,7 @@ export class RecordAudioPage {
     try {
       this.media.stopRecord();
     } catch (e) {
-      this.errorHandler.showAlert('Die Aufnahme konnte nicht gestoppt werden.', e);
+      this.messageHandler.showAlert('Die Aufnahme konnte nicht gestoppt werden.', e);
       return;
     }
 
@@ -75,7 +79,7 @@ export class RecordAudioPage {
     try {
       this.media.play();
     } catch (e) {
-      this.errorHandler.showAlert('Die Aufnahme konnte nicht abgespielt werden.', e);
+      this.messageHandler.showAlert('Die Aufnahme konnte nicht abgespielt werden.', e);
       return;
     }
 
@@ -98,7 +102,7 @@ export class RecordAudioPage {
     try {
       this.media.pause();
     } catch (e) {
-      this.errorHandler.showAlert('Die Aufnahme konnte nicht pausiert werden.', e);
+      this.messageHandler.showAlert('Die Aufnahme konnte nicht pausiert werden.', e);
       return;
     }
 
@@ -110,21 +114,29 @@ export class RecordAudioPage {
     try {
       this.media.stop();
     } catch (e) {
-      this.errorHandler.showAlert('Die Aufnahme konnte nicht gestoppt werden.', e);
+      this.messageHandler.showAlert('Die Aufnahme konnte nicht gestoppt werden.', e);
     }
 
     if (this.recordingStatus === 3) {
       clearInterval(this.recordingPlayUpdate);
     }
 
-    if(save) {
+    if (save) {
       this.database.createRecording(this.title, this.recordingDuration)
         .then(
           (insertId) => {
-            File.moveFile(cordova.file.externalDataDirectory, this.recordingName, cordova.file.externalDataDirectory, insertId+'.mp3');
+            File.moveFile(cordova.file.externalDataDirectory, this.recordingName, cordova.file.externalDataDirectory, insertId + '.mp3')
+              .then(
+                () => {
+                  this.messageHandler.showSuccessToast('Die Aufnahme wurde gespeichert.');
+                },
+                (error) => {
+                  this.messageHandler.showAlert('Die Aufnahme konnte nicht gespeichert werden.', error);
+                }
+              );
           },
           (error) => {
-            this.errorHandler.showAlert('Die Aufnahme konnte nicht gespeichert werden.', error);
+            this.messageHandler.showAlert('Die Aufnahme konnte nicht gespeichert werden.', error);
           }
         )
     }
@@ -138,34 +150,9 @@ export class RecordAudioPage {
   }
 
   private updateRecordingTime() {
+    console.log('update');
     let now: Date = new Date();
     this.recordingDuration = Math.floor((now.getTime() - this.startedRecording.getTime()) / 1000);
-
-    let seconds: number = this.recordingDuration;
-    if (seconds >= 3600) {
-      this.stopRecording();
-      return;
-    }
-
-    let time: string = '';
-    if (seconds >= 600) {
-      time += Math.floor(seconds / 60);
-    } else if (seconds >= 60) {
-      time += '0' + Math.floor(seconds / 60);
-    } else {
-      time += '00';
-    }
-
-    seconds %= 60;
-    time += ':';
-
-    if (seconds >= 10) {
-      time += seconds;
-    } else {
-      time += '0' + seconds;
-    }
-
-    this.recordingTimer = time;
   }
 
 }

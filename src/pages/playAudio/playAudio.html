@@ -9,14 +9,19 @@
 
 <ion-content>
   <ion-list>
+    <ion-item *ngIf="voiceMessages.length===0">
+      Es existieren bisher keine Aufnahmen.
+    </ion-item>
     <ion-item *ngFor="let voiceMessage of voiceMessages; let i = index">
       {{voiceMessage.title}}
       <br>
       {{voiceMessage.date}}
-      <ion-icon [hidden]="i != currentlyPlayingIndex" name="pause" style="float:right; margin-right:15px;" (click)="stopPlaying()"></ion-icon>
-      <ion-icon [hidden]="i == currentlyPlayingIndex" name="play" style="float:right; margin-right:15px;" (click)="startPlaying(i)"></ion-icon>
+      <ion-icon [hidden]="i != currentlyPlayingIndex" name="pause" style="float:right; margin-right:15px;"
+                (click)="stopPlaying()"></ion-icon>
+      <ion-icon [hidden]="i == currentlyPlayingIndex" name="play" style="float:right; margin-right:15px;"
+                (click)="startPlaying(i)"></ion-icon>
       <br>
-      {{voiceMessage.duration}}
+      {{voiceMessage.duration | secondsToTime}}
     </ion-item>
   </ion-list>
 </ion-content>

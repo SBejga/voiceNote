@@ -23,15 +23,15 @@
     </button>
 
     <div class="time" *ngIf="recordingStatus===1">
-      {{ recordingTimer }}
+      {{ recordingDuration | secondsToTime }}
     </div>
 
     <div class="time" *ngIf="recordingStatus>1 && recordingDuration>0">
       <ion-item>
         <ion-range min="0" max="{{recordingDuration}}"
                    [ngModel]="recordingPosition" (ionChange)="setCurrentPosition($event.value)">
-          <ion-label range-left>{{recordingPosition}}</ion-label>
-          <ion-label range-right>{{recordingDuration}}</ion-label>
+          <ion-label range-left>{{recordingPosition | secondsToTime}}</ion-label>
+          <ion-label range-right>{{recordingDuration | secondsToTime}}</ion-label>
         </ion-range>
       </ion-item>
     </div>

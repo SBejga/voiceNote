@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
-import {MenuController, NavController, ModalController} from 'ionic-angular';
+import {MenuController, NavController} from 'ionic-angular';
 import {RecordAudioPage} from '../recordAudio/recordAudio';
 import {DatabaseService} from '../../providers/database';
 import {MessageHandlerService} from "../../providers/messageHandler";
-import {TutorialModal} from "../tutorialModal/tutorial";
 
 @Component({
   selector: 'page-registrate',
@@ -15,7 +14,7 @@ export class RegistratePage {
   public password: string = '';
   public password2: string = '';
 
-  constructor(private nav: NavController, private menu: MenuController, private modalController: ModalController,
+  constructor(private nav: NavController, private menu: MenuController,
               private database: DatabaseService, private messageHandler: MessageHandlerService) {
   }
 
@@ -41,12 +40,13 @@ export class RegistratePage {
           return;
         }
 
-        this.openTutorial();
+        this.nav.setRoot(RecordAudioPage);
+      //  this.openTutorial();
 
       }
     );
   }
-
+/*
   private openTutorial() {
     let modal = this.modalController.create(TutorialModal, {
       imageTexts: [
@@ -66,4 +66,5 @@ export class RegistratePage {
     );
     modal.present();
   }
+  */
 }

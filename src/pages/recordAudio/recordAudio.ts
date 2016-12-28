@@ -4,8 +4,6 @@ import {MediaPlugin, File} from 'ionic-native'
 
 import {DatabaseService} from '../../providers/database';
 import {MessageHandlerService} from '../../providers/messageHandler';
-import {ModalController} from "ionic-angular";
-import {TutorialModal} from "../tutorialModal/tutorial";
 
 declare let cordova: any;
 
@@ -33,22 +31,7 @@ export class RecordAudioPage {
   private recordingTimerUpdate: any = null;
   private recordingPlayUpdate: any = null;
 
-  constructor(private database: DatabaseService, private messageHandler: MessageHandlerService,
-              private modalController: ModalController) {
-  }
-
-  ionViewDidEnter() {
-    let modal = this.modalController.create(TutorialModal, {
-      imageTexts: [
-        'T1',
-        'T2',
-        'T3',
-        'T4',
-        'T5',
-        'T5'
-      ]
-    });
-    modal.present();
+  constructor(private database: DatabaseService, private messageHandler: MessageHandlerService) {
   }
 
   /*

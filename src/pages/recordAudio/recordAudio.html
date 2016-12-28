@@ -41,10 +41,10 @@
         <ion-label floating="">Titel</ion-label>
         <ion-input [(ngModel)]="title" type="text"></ion-input>
       </ion-item>
-      <button ion-button icon-left block (click)="newRecording(true)">
+      <button ion-button icon-left block (click)="clearRecording(true)">
         <ion-icon name="cloud-upload"></ion-icon> Speichern
       </button>
-      <button ion-button icon-left block (click)="newRecording(false)">
+      <button ion-button icon-left block (click)="clearRecording(false)">
         <ion-icon name="trash"></ion-icon> Verwerfen
       </button>
     </div>

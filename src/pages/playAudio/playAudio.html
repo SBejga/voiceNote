@@ -9,19 +9,38 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngIf="voiceMessages.length===0">
+    <ion-item *ngIf="voiceMessages.length===0 && firstMessagesLoaded">
       Es existieren bisher keine Aufnahmen.
     </ion-item>
     <ion-item *ngFor="let voiceMessage of voiceMessages; let i = index">
-      {{voiceMessage.title}}
-      <br>
-      {{voiceMessage.date}}
-      <ion-icon [hidden]="i != currentlyPlayingIndex" name="pause" style="float:right; margin-right:15px;"
-                (click)="stopPlaying()"></ion-icon>
-      <ion-icon [hidden]="i == currentlyPlayingIndex" name="play" style="float:right; margin-right:15px;"
-                (click)="startPlaying(i)"></ion-icon>
-      <br>
-      {{voiceMessage.duration | secondsToTime}}
+      <div class="memo-element">
+        <div class="info-data">
+          <div>
+            {{voiceMessage.title}}
+          </div>
+          <div>
+            {{voiceMessage.date}}
+          </div>
+          <div>
+            Dauer: {{voiceMessage.duration | secondsToTime}}
+          </div>
+          <ion-item *ngIf="i===currentlyPlayingIndex || i===currentlyPausedIndex">
+            <ion-range min="0" max="{{voiceMessage.duration}}"
+                       [ngModel]="currentPosition" (ionChange)="setCurrentPosition($event.value)">
+              <ion-label range-left>{{currentPosition | secondsToTime}}</ion-label>
+              <ion-label range-right>{{voiceMessage.duration | secondsToTime}}</ion-label>
+            </ion-range>
+          </ion-item>
+        </div>
+
+        <ion-icon [hidden]="i != currentlyPlayingIndex" name="pause" style="float:right; margin-right:15px;"
+                  (click)="pausePlaying()"></ion-icon>
+        <ion-icon [hidden]="i == currentlyPlayingIndex" name="play" style="float:right; margin-right:15px;"
+                  (click)="startPlaying(i)"></ion-icon>
+      </div>
     </ion-item>
   </ion-list>
+  <button (click)="loadMessages()" *ngIf="firstMessagesLoaded && !loadedAllMessages">
+    Weitere Memos laden
+  </button>
 </ion-content>

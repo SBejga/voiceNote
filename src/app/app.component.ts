@@ -1,12 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen} from 'ionic-native';
+import {Component, ViewChild} from '@angular/core';
+import {Nav, Platform} from 'ionic-angular';
+import {StatusBar, Splashscreen} from 'ionic-native';
 
-import { RecordAudioPage } from '../pages/recordAudio/recordAudio';
-import { PlayAudio } from '../pages/playAudio/playAudio';
-import { LoginPage } from '../pages/login/login';
+import {RecordAudioPage} from '../pages/recordAudio/recordAudio';
+import {PlayAudio} from '../pages/playAudio/playAudio';
+import {LoginPage} from '../pages/login/login';
 
 import {AuthorizerService} from "../providers/authorizer";
+import {DatabaseService} from "../providers/database";
+import {MessageHandlerService} from "../providers/messageHandler";
 
 @Component({
   templateUrl: 'app.html'
@@ -15,27 +17,46 @@ import {AuthorizerService} from "../providers/authorizer";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  rootPage: any;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(private platform: Platform, private authorizer: AuthorizerService) {
+  constructor(private platform: Platform, private authorizer: AuthorizerService,
+              private database: DatabaseService, private messageHandler: MessageHandlerService) {
     this.initializeApp();
 
-    // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Nachricht aufnehmen', component: RecordAudioPage },
-      { title: 'Aufnahmen abspielen', component: PlayAudio }
+      {title: 'Nachricht aufnehmen', component: RecordAudioPage},
+      {title: 'Aufnahmen abspielen', component: PlayAudio}
     ];
 
   }
 
   private initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-      Splashscreen.hide();
+      this.database.init() // Initialisiere die Datenbank
+        .then(
+          () => {
+            return this.database.getLoggedInUser(); // Prüfe, ob jemand eingeloggt ist
+          }
+        )
+        .then(
+          (user) => {
+            if (user) { // Falls jemand eingeloggt ist, starte mit der Aufnahmeseite
+              this.authorizer.setUser(user);
+              this.rootPage = RecordAudioPage;
+            } else { // Ansonsten mit dem Login
+              this.rootPage  = LoginPage;
+            }
+            StatusBar.styleDefault();
+            Splashscreen.hide();
+          }
+        )
+        .catch(
+          (error) => {
+            this.messageHandler.showAlert('Es gab einen Fehler bei der Initialisierung der Datenbank.', error);
+          }
+        );
     });
   }
 
@@ -47,6 +68,7 @@ export class MyApp {
 
   public logout() {
     this.authorizer.setUser(null);
+    this.database.setUserLoggedIn(-1);
     this.nav.setRoot(LoginPage);
   }
 }

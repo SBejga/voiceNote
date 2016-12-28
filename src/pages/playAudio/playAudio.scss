@@ -1,3 +1,16 @@
 page-play-audio {
+  .memo-element {
+    width: 100%;
+    .info-data {
+      width: calc(100% - 50px);
+      white-space: normal;
+    }
 
+    ion-icon {
+      position: absolute;
+      right: 31px;
+      margin-right: 0;
+      top: 20px;
+    }
+  }
 }

@@ -1,15 +1,16 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
+import {IonicApp, IonicModule} from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { RecordAudioPage } from '../pages/recordAudio/recordAudio';
 import { PlayAudio } from '../pages/playAudio/playAudio';
 import { LoginPage } from '../pages/login/login';
-import {RegistratePage} from "../pages/registrate/registrate";
-import {SecondsToTimePipe} from "../pipes/secondsToTime";
-import {DatabaseService} from "../providers/database";
-import {AuthorizerService} from "../providers/authorizer";
-import {MessageHandlerService} from "../providers/messageHandlerService";
+import {RegistratePage} from '../pages/registrate/registrate';
+import {SecondsToTimePipe} from '../pipes/secondsToTime';
+import {DatabaseService} from '../providers/database';
+import {AuthorizerService} from '../providers/authorizer';
+import {MessageHandlerService} from '../providers/messageHandler';
+import {ErrorHandlerService} from '../providers/errorHandler';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import {MessageHandlerService} from "../providers/messageHandlerService";
     RegistratePage
   ],
   providers: [
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {provide: ErrorHandler, useClass: ErrorHandlerService},
     DatabaseService,
     MessageHandlerService,
     AuthorizerService

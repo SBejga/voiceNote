@@ -1,44 +1,4 @@
 Bugs:
 
-Abspielen
--> drücke mehrere
-=> bisheriges wird bei wechsel nicht abgebrochen
-
-Abspielen
-=> paginierung implementieren
-
-(evtl alles im record auf media plugin callback umschichten)
-
----------------------------------------
-
-Use Cases:
-
-Login
--> Nutzer existiert nicht
-=> Toast benachrichtigt über den Fehler
-
-Registrieren
--> Passwort ungleich
-=> Toast
-
-Registrieren
--> Nutzername existiert bereits
-=> Toast
-
-Registrieren
--> alles Ok
-=> user wird erstellt + eingeloggt
-
-Logout
-=> Auf Loginseite geleitet
-
-Nachricht aufnehmen
--> Drücke start
--> Drücke stop
-(-> Drücke play)
-(-> Titel eingeben)
-=> Success Toast
-
-Nachrichten anhören
--> noch keine existieren
-=> Meldung, dass noch keine Aufnahme existiert
+Registrierung
+=> validierung

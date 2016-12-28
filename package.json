@@ -39,8 +39,7 @@
     "cordova-plugin-file",
     "cordova-plugin-media",
     "cordova-sqlite-storage",
-    "cordova-plugin-x-toast",
-    "cordova.plugins.diagnostic"
+    "cordova-plugin-x-toast"
   ],
   "cordovaPlatforms": [],
   "description": "VoiceNote: An Ionic project"

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {MenuController, NavController} from 'ionic-angular';
 import {RecordAudioPage} from '../recordAudio/recordAudio';
 import {DatabaseService} from '../../providers/database';
-import {MessageHandlerService} from "../../providers/messageHandlerService";
+import {MessageHandlerService} from "../../providers/messageHandler";
 
 @Component({
   selector: 'page-registrate',

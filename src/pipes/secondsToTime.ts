@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/*
+ * Wandelt eine Anzahl von Sekunden in das Format Stunden:Minuten:Sekunden um
+ */
 @Pipe({name: 'secondsToTime'})
 export class SecondsToTimePipe implements PipeTransform {
   transform(seconds: number): string {

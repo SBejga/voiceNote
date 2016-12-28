@@ -40,7 +40,7 @@
       </div>
     </ion-item>
   </ion-list>
-  <button (click)="loadMessages()" *ngIf="firstMessagesLoaded && !loadedAllMessages">
+  <button ion-button block (click)="loadMessages()" *ngIf="firstMessagesLoaded && !loadedAllMessages">
     Weitere Memos laden
   </button>
 </ion-content>

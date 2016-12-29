@@ -6,7 +6,6 @@ import { RecordAudioPage } from '../pages/recordAudio/recordAudio';
 import { PlayAudio } from '../pages/playAudio/playAudio';
 import { LoginPage } from '../pages/login/login';
 import {RegistratePage} from '../pages/registrate/registrate';
-import {TutorialModal} from "../pages/tutorialModal/tutorial";
 import {SecondsToTimePipe} from '../pipes/secondsToTime';
 import {DatabaseService} from '../providers/database';
 import {AuthorizerService} from '../providers/authorizer';
@@ -19,7 +18,6 @@ import {ErrorHandlerService} from '../providers/errorHandler';
     RecordAudioPage,
     PlayAudio,
     LoginPage,
-    TutorialModal,
     RegistratePage,
     SecondsToTimePipe
   ],
@@ -32,8 +30,7 @@ import {ErrorHandlerService} from '../providers/errorHandler';
     RecordAudioPage,
     PlayAudio,
     LoginPage,
-    RegistratePage,
-    TutorialModal
+    RegistratePage
   ],
   providers: [
     {provide: ErrorHandler, useClass: ErrorHandlerService},
